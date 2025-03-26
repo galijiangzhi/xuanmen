@@ -9,7 +9,7 @@ file_list = os.listdir(os.path.join(root_path,dir_list[1]))
 print(os.path.join(root_path,dir_list[1],dir_list[1]))
 
 for i in dir_list[2:]:
-    file_list = os.listdir(os.path.join(root_path, i))
+    file_list = os.listdir(os.path.join(root_path,i))
     for j in file_list:
         vidlist.append(os.path.join(root_path, i, j))
         txtlist.append(os.path.join(text_path, i, j))
