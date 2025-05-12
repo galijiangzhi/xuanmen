@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hand Detection Results</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .upload-section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        #result {
+            margin-top: 20px;
+        }
+        .result-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .result-title {
+            font-weight: bold;
+            color: #3498db;
+            margin-bottom: 10px;
+        }
+        .file-info {
+            background-color: #f0f8ff;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        .landmark-frame {
+            margin-bottom: 15px;
+            border-left: 3px solid #3498db;
+            padding-left: 10px;
+        }
+        .frame-title {
+            font-weight: bold;
+            color: #2c3e50;
+            cursor: pointer;
+            margin-bottom: 5px;
+        }
+        .landmarks-content {
+            display: none;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        .analysis-result {
+            background-color: #e8f4f8;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+        }
+        .labels-container {
+            background-color: #fff8e1;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+        .labels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+            gap: 5px;
+        }
+        .label-item {
+            background-color: #e3f2fd;
+            padding: 5px;
+            text-align: center;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .frame-controls {
+            margin: 10px 0;
+        }
+        .frame-controls button {
+            margin-right: 10px;
+            padding: 8px 12px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Hand Detection Analysis</h2>
+
+    <div class="upload-section">
+        <h3>Upload a Video</h3>
+        <form id="uploadForm" enctype="multipart/form-data">
+            <input type="file" name="file" accept="video/*" required><br><br>
+            <button type="submit">Process Video</button>
+        </form>
+    </div>
+
+    <div id="result">
+        <!-- Results will be displayed here -->
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            $('#uploadForm').on('submit', function(event){
+                event.preventDefault();
+                $('#result').html('<p>Processing video, please wait...</p>');
+
+                var formData = new FormData(this);
+
+                $.ajax({
+                    url: 'http://127.0.0.1:5000/process_video',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response){
+                        console.log("Response:", response);
+
+                        if (response.status === "success") {
+                            let output = `
+                                <div class="result-card">
+                                    <div class="file-info">
+                                        <strong>File Name:</strong> ${response.filename}<br>
+                                        <strong>Total Frames Analyzed:</strong> ${response.frame_count}
+                                    </div>
+                            `;
+
+                            // Add analysis result section
+                            if (response.resulttext) {
+                                output += `
+                                    <div class="analysis-result">
+                                        <div class="result-title">Analysis Results:</div>
+                                        ${response.resulttext}
+                                    </div>
+                                `;
+                            }
+
+                            // Add new_labels section
+                            if (response.new_labels) {
+                                output += `
+                                    <div class="result-title">Frame Labels:</div>
+                                    <div class="labels-container">
+                                        <div class="labels-grid">
+                                `;
+
+                                // Display each label in a grid
+                                response.new_labels.forEach((label, index) => {
+                                    output += `<div class="label-item" title="Frame ${index + 1}">${label}</div>`;
+                                });
+
+                                output += `
+                                        </div>
+                                    </div>
+                                `;
+                            }
+
+                            // Add landmarks section with frame controls
+                            output += `
+                                <div class="result-title">Landmark Data (Sample Frames):</div>
+                                <div class="frame-controls">
+                                    <button id="expandAllFrames">Expand All Frames</button>
+                                    <button id="collapseAllFrames">Collapse All Frames</button>
+                                </div>
+                            `;
+
+                            response.landmarks.forEach((frame, index) => {
+                                output += `
+                                    <div class="landmark-frame">
+                                        <div class="frame-title" onclick="toggleFrame(this)">
+                                            ▶ Frame ${index + 1}
+                                        </div>
+                                        <div class="landmarks-content">
+                                            <strong>Hand 0:</strong> ${frame[0].join(', ')}<br><br>
+                                            <strong>Hand 1:</strong> ${frame[1].join(', ')}
+                                        </div>
+                                    </div>
+                                `;
+                            });
+
+                            output += `</div>`;
+                            $('#result').html(output);
+
+                            // Add frame control functionality
+                            $('#expandAllFrames').click(function() {
+                                $('.landmarks-content').slideDown();
+                                $('.frame-title').each(function() {
+                                    $(this).html('▼ ' + $(this).text().substring(2));
+                                });
+                            });
+
+                            $('#collapseAllFrames').click(function() {
+                                $('.landmarks-content').slideUp();
+                                $('.frame-title').each(function() {
+                                    $(this).html('▶ ' + $(this).text().substring(2));
+                                });
+                            });
+                        } else {
+                            $('#result').html('<div class="result-card" style="color:red;">Unexpected response format.</div>');
+                        }
+                    },
+                    error: function(xhr, status, error){
+                        console.error("Error details:", xhr.responseText);
+                        $('#result').html('<div class="result-card" style="color:red;">Error: ' +
+                            (xhr.responseText || 'Processing failed') + '</div>');
+                    }
+                });
+            });
+
+            // Frame toggle function
+            window.toggleFrame = function(element) {
+                const content = $(element).next('.landmarks-content');
+                content.slideToggle();
+                if (content.is(':visible')) {
+                    $(element).html('▼ ' + $(element).text().substring(2));
+                } else {
+                    $(element).html('▶ ' + $(element).text().substring(2));
+                }
+            };
+        });
+    </script>
+</body>
+</html>
