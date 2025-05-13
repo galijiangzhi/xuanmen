@@ -109,6 +109,24 @@
             padding: 8px 12px;
             font-size: 14px;
         }
+        select {
+            padding: 8px 12px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+            margin-bottom: 15px;
+            width: 100%;
+            max-width: 400px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
     </style>
 </head>
 <body>
@@ -117,7 +135,49 @@
     <div class="upload-section">
         <h3>Upload a Video</h3>
         <form id="uploadForm" enctype="multipart/form-data">
-            <input type="file" name="file" accept="video/*" required><br><br>
+            <div class="form-group">
+                <label for="modelSelect">Select Model:</label>
+                <select id="modelSelect" name="model" required>
+                    <option value="">-- Select a Model --</option>
+                    <option value="Km20-emb256-hid256_双手分离_抽帧1">Km20-emb256-hid256_双手分离_抽帧1</option>
+                    <option value="Km30-emb512-hid512_双手分离_抽帧1">Km30-emb512-hid512_双手分离_抽帧1</option>
+                    <option value="Km40-emb128-hid128_双手分离_抽帧1">Km40-emb128-hid128_双手分离_抽帧1</option>
+                    <option value="Km40-emb256-hid256_双手分离_抽帧1">Km40-emb256-hid256_双手分离_抽帧1</option>
+                    <option value="Km40-emb512-hid512_双手分离_抽帧1">Km40-emb512-hid512_双手分离_抽帧1</option>
+                    <option value="Km50-emb128-hid128_双手分离_抽帧1">Km50-emb128-hid128_双手分离_抽帧1</option>
+                    <option value="Km50-emb256-hid256_双手分离_抽帧1">Km50-emb256-hid256_双手分离_抽帧1</option>
+                    <option value="Km70-emb128-hid128_双手分离_抽帧1">Km70-emb128-hid128_双手分离_抽帧1</option>
+                    <option value="Km70-emb256-hid256_双手分离_抽帧1">Km70-emb256-hid256_双手分离_抽帧1</option>
+                    <option value="Km70-emb512-hid512_双手分离_抽帧1">Km70-emb512-hid512_双手分离_抽帧1</option>
+                    <option value="Km100-emb128-hid128_双手分离_抽帧1">Km100-emb128-hid128_双手分离_抽帧1</option>
+                    <option value="Km100-emb256-hid256_双手分离_抽帧1">Km100-emb256-hid256_双手分离_抽帧1</option>
+                    <option value="Km100-emb512-hid512_双手分离_抽帧1">Km100-emb512-hid512_双手分离_抽帧1</option>
+                    <option value="Km40-emb256-hid256_双手合并_抽帧1">Km40-emb256-hid256_双手合并_抽帧1</option>
+                    <option value="Km40-emb512-hid512_双手合并_抽帧1">Km40-emb512-hid512_双手合并_抽帧1</option>
+                    <option value="Km80-emb512-hid512_双手合并_抽帧1">Km80-emb512-hid512_双手合并_抽帧1</option>
+                    <option value="Km80-emb512-hid512_双手合并_抽帧3">Km80-emb512-hid512_双手合并_抽帧3</option>
+                    <option value="Km80-emb512-hid512_双手合并_抽帧5">Km80-emb512-hid512_双手合并_抽帧5</option>
+                    <option value="Km80-emb512-hid512_双手合并_抽帧7">Km80-emb512-hid512_双手合并_抽帧7</option>
+                    <option value="train0.8_kme80_emb512_hid512_双手合并_抽帧5">train0.8_kme80_emb512_hid512_双手合并_抽帧5</option>
+                    <option value="train0.5_kme80_emb512_hid512_双手合并_抽帧5">train0.5_kme80_emb512_hid512_双手合并_抽帧5</option>
+                    <option value="train0.3_kme80_emb512_hid512_双手合并_抽帧5">train0.3_kme80_emb512_hid512_双手合并_抽帧5</option>
+                    <option value="train0.2_kme80_emb512_hid512_双手合并_抽帧5">train0.2_kme80_emb512_hid512_双手合并_抽帧5</option>
+                    <option value="train0.8kme80_emb512_hid512_multi-head_双手合并_抽帧5">train0.8kme80_emb512_hid512_multi-head_双手合并_抽帧5</option>
+                    <option value="train0.5kme80_emb512_hid512_multi-head_双手合并_抽帧5">train0.5kme80_emb512_hid512_multi-head_双手合并_抽帧5</option>
+                    <option value="train0.3kme80_emb512_hid512_multi-head_双手合并_抽帧5">train0.3kme80_emb512_hid512_multi-head_双手合并_抽帧5</option>
+                    <option value="train0.2kme80_emb512_hid512_multi-head_双手合并_抽帧5">train0.2kme80_emb512_hid512_multi-head_双手合并_抽帧5</option>
+                    <option value="train0.8_kme40_emb256_hid256_multi-head_双手合并_抽帧1">train0.8_kme40_emb256_hid256_multi-head_双手合并_抽帧1</option>
+                    <option value="train0.5_kme40_emb256_hid256_multi-head_双手合并_抽帧1">train0.5_kme40_emb256_hid256_multi-head_双手合并_抽帧1</option>
+                    <option value="train0.3_kme40_emb256_hid256_multi-head_双手合并_抽帧1">train0.3_kme40_emb256_hid256_multi-head_双手合并_抽帧1</option>
+                    <option value="train0.8_kme40_emb256_hid256_双手合并_抽帧1">train0.8_kme40_emb256_hid256_双手合并_抽帧1</option>
+                    <option value="train0.5_kme40_emb256_hid256_双手合并_抽帧1">train0.5_kme40_emb256_hid256_双手合并_抽帧1</option>
+                    <option value="train0.3_kme40_emb256_hid256_双手合并_抽帧1">train0.3_kme40_emb256_hid256_双手合并_抽帧1</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="fileInput">Video File:</label>
+                <input type="file" id="fileInput" name="file" accept="video/*" required>
+            </div>
             <button type="submit">Process Video</button>
         </form>
     </div>
@@ -148,6 +208,7 @@
                                 <div class="result-card">
                                     <div class="file-info">
                                         <strong>File Name:</strong> ${response.filename}<br>
+                                        <strong>Model Used:</strong> ${$('#modelSelect').val()}<br>
                                         <strong>Total Frames Analyzed:</strong> ${response.frame_count}
                                     </div>
                             `;
