@@ -10,16 +10,13 @@ from joblib import load
 import torch.nn as nn
 import numpy as np
 import torch
-from models.model import seq2seq
+from models.model import seq2seq,Seq2SeqWithMultiHeadAttention
 from models.mediapipe_method import process_video_with_mediapipe
-from models.utils import allowed_file,ALLOWED_EXTENSIONS
+from models.utils import allowed_file,ALLOWED_EXTENSIONS,model_dict,list_proLR,left_right_hand
 app = Flask(__name__)
 CORS(app)
 # Configuration
 
-{
-
-}
 UPLOAD_FOLDER = 'uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -45,6 +42,7 @@ def process_video():
         return jsonify({'error': 'Invalid file type'}), 400
     model_name = request.form.get('model')
     print(f"Selected model: {model_name}")  # 打印模型名称
+    print(model_dict[model_name])
     try:
         # Generate unique filename
         unique_id = str(uuid.uuid4())[:8]
@@ -60,50 +58,30 @@ def process_video():
             raise FileNotFoundError("File was not saved correctly")
 
         # Process the video
-        landmarks = process_video_with_mediapipe(save_path)
+        landmarks = process_video_with_mediapipe(save_path,sample_interval=model_dict[model_name][2])
         # print(landmarks)
-
+        # 模型参数
+        input_dim = model_dict[model_name][3]  # 输入词汇表大小(等于原词汇表大小+2，+2加的是结束符号和填充符号）
+        output_dim = 181  # 输出词汇表大小（需你确认）
+        n_layers = 1
+        OUTPUT_DIM = 181  # 输出词汇表大小（需你确认）
+        max_length = 800/model_dict[model_name][2]
 
         # 参数列表
-        kmeans_loaded = load('../../model/kmeans/kmeans_40.joblib')  # 分类文件夹根目录
-        all_path = '../SLR_dataset/seq_txt/'
-        save_path = '../SLR_dataset/kmeans_100_seq/'
-
-        def left_right_hand(data):
-            left = data[0:63]
-            right = data[63:]
-            return left, right
-
-        def list_proLR(data):
-            # 该函数用于将读取到的数据变成左右手格式
-            result = []
-            for i in data:
-                left, right = left_right_hand(i)
-                result += [left, right]
-            return result
-
+        kmeans_loaded = load(os.path.join(model_dict['root']['kmeans'],model_dict[model_name][1]))  # 分类文件夹根目录
+        # save_path = '../SLR_dataset/kmeans_100_seq/'
         all_new_labels = []
-        datalist = []
-
         datalist = []
         for line in landmarks:  # 逐行读取文件内容
             # 按空格分割每一行，并将每个部分转换为浮点型
             # print(line) 每一行63*2个数据
             for hand in line:
                 datalist.append(hand)  # 将转换后的浮点型列表添加到 datalist
-
+        if '双手合并' in model_dict[model_name][1]:
+            datalist = [datalist[2*i]+datalist[2*i+1] for i in range(len(datalist)//2)]
+            max_length = int(max_length/2)
         new_labels = kmeans_loaded.predict(datalist)
         print(new_labels)
-
-
-
-        # 模型参数
-        input_dim = 42  # 输入词汇表大小(等于原词汇表大小+2，+2加的是结束符号和填充符号）
-        emb_dim = 256  # 词向量维度
-        hidden_dim = 256  # LSTM隐藏层维度
-        output_dim = 181  # 输出词汇表大小（需你确认）
-        n_layers = 1
-        OUTPUT_DIM = 181  # 输出词汇表大小（需你确认）
 
         device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
@@ -111,7 +89,7 @@ def process_video():
         end_token = (input_dim - 2)  # 源序列结束符号
         pad_token = (input_dim - 1)  # 源填充符号
         vocab = torch.load("../../model/vocab.pt", weights_only=False)
-        model = torch.load('../../model/xuanmen_km40/lstm_kme40_emb256_hid256.pth', weights_only=False)
+        model = torch.load(os.path.join(model_dict['root']['model'],model_dict[model_name][0]), weights_only=False)
 
         numpy_array = np.array(new_labels, dtype=np.int32)
         j_tensor = torch.tensor(numpy_array)
