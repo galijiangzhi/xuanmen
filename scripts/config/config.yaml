@@ -1,0 +1,20 @@
+mediapipe:
+  static_image_mode: False,  # 视频流模式（跟踪优先）
+  max_num_hands: 2,  # 最多检测2只手
+  model_complexity: 1,  # 中等复杂度模型
+  min_detection_confidence: 0.4,  # 检测置信度阈值较高
+  min_tracking_confidence: 0.3  # 跟踪置信度阈值
+
+path:
+  dataset_video_path: './SLR_dataset/color' #数据集视频地址
+  dataset_seq_path: '../SLR_dataset/seq_txt' #数据集转换序列之后的保存地址
+
+
+mysql:
+  host: 127.0.0.1
+  user: baizhen
+  password: viekk2423
+  database: webwx
+neo4j:
+  host: bolt://localhost:7687
+  user: neo4j
