@@ -1,20 +1,38 @@
+model:
+  双手合并: True
+  取样区间: 1
+  kmeans类别: 40
+  kmeans训练批次大小: 5000
+  多头: False
+
 mediapipe:
-  static_image_mode: False,  # 视频流模式（跟踪优先）
-  max_num_hands: 2,  # 最多检测2只手
-  model_complexity: 1,  # 中等复杂度模型
-  min_detection_confidence: 0.4,  # 检测置信度阈值较高
+  static_image_mode: False # 视频流模式（跟踪优先）
+  max_num_hands: 2  # 最多检测2只手
+  model_complexity: 1  # 中等复杂度模型
+  min_detection_confidence: 0.4  # 检测置信度阈值较高
   min_tracking_confidence: 0.3  # 跟踪置信度阈值
+  max_workers: 6
+
+流程:
+  video2txt: False
+  数据零值比例过滤: False
+  整合合理数据: False
+  kmeans模型训练: False
+  kmeans对原数据进行处理: True
+#  数据抽帧加工: True
+
+数据清洗:
+  零值比例阈值: 0.74
+
+计算参数:
+  max_workers: 6
 
 path:
   dataset_video_path: './SLR_dataset/color' #数据集视频地址
-  dataset_seq_path: '../SLR_dataset/seq_txt' #数据集转换序列之后的保存地址
-
-
-mysql:
-  host: 127.0.0.1
-  user: baizhen
-  password: viekk2423
-  database: webwx
-neo4j:
-  host: bolt://localhost:7687
-  user: neo4j
+  dataset_seq_path: './SLR_dataset/seq_txt' #数据集转换序列之后的保存地址
+  双手合并全部数据npy_path: './SLR_dataset/准确率正常的全部数据_双手合并.npy'
+  双手分离全部数据npy_path: './SLR_dataset/准确率正常的全部数据_双手分离.npy'
+  kmeans_root_path: './SLR_dataset/model/kmeans'
+  kmeseq_root_path: './SLR_dataset/kme_seq'
+log:
+  video_process_log: "./scripts/config/video_processed.log"
