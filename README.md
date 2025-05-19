@@ -46,13 +46,12 @@ cd demo/flask
 python main.py
 ```
 
-等待后端程序启动之后，通过浏览器访问 http://127.0.0.1:5000 可以打开demo测试页面，前端结构如下：
-
-<img src="/information/demo_前端示意图.png" alt="demo前端示意图" width="900" />
+等待后端程序启动之后，通过浏览器访问 http://127.0.0.1:5000 可以打开demo测试页面，前端结构[如图所示（点击查看）](https://github.com/galijiangzhi/xuanmen/blob/main/information/demo_%E5%89%8D%E7%AB%AF%E7%A4%BA%E6%84%8F%E5%9B%BE.png)。
 
 模型选择建议使用 km40-emb256-hid256_双手分离_抽帧1，
 同时我们提供了一些测试视频，测试视频根路径为 'xuanmen/demo/demo_data'，
 这些测试视频会在克隆代码仓库的时候一并克隆到本地。
+
 </details>
 <details open>
 <summary>✏️ 训练模型</summary>
