@@ -13,7 +13,7 @@ Xuanmen_Net 是一个基于 PyTorch 的先进手语翻译模型，
 提供flask部署方案
 
 快速开始：
-<details>
+<details open>
 <summary>✏️ 环境配置</summary>
 
 ### 克隆代码仓库并在Python3.10版本的环境中安装依赖项，请确保已安装cuda12.3及以上版本。推荐使用Python3.10.16+cuda12.3的搭配。
@@ -30,7 +30,7 @@ cd xuanmen
 pip install -r requirements.txt
 ```
 </details>
-<details>
+<details open>
 <summary>✏️ 快速运行demo</summary>
 
 ### 我们提供了建议的demo用于展示结果，请确保已完成环境配置后执行以下代码运行示例程序
@@ -45,6 +45,9 @@ cd demo/flask
 #运行demo程序
 python main.py
 ```
+
+等待后端程序启动之后，通过浏览器访问 http://127.0.0.1:5000 可以打开demo测试页面，前端结构如下：
+
 <img src="/information/demo_前端示意图.png" alt="demo前端示意图" width="900" />
 
 模型选择建议使用 km40-emb256-hid256_双手分离_抽帧1，
