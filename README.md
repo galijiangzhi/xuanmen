@@ -45,7 +45,7 @@ cd demo/flask
 #运行demo程序
 python main.py
 ```
-<img src="./information/demo_前端示意图.png" alt="demo前端示意图" width="900" />
+<img src="/information/demo_前端示意图.png" alt="demo前端示意图" width="900" />
 
 模型选择建议使用 km40-emb256-hid256_双手分离_抽帧1，
 同时我们提供了一些测试视频，测试视频根路径为 'xuanmen/demo/demo_data'，
