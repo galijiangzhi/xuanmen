@@ -163,7 +163,38 @@ cluster_num: 80
 ```
 </details>
 <details open>
-<summary>✏️ 3.修改配置文件</summary>
+<summary>✏️ 3.整理目录</summary>
+
+## 构建您的数据集目录
+
+推荐的目录结构为
+
+```
+xuanmen(git代码仓库根路径）
+└── SLR_dataset/  # 数据根路径
+    ├── color/   #视频数据路径
+    │   ├── 000000/  # 存放第一类语义的视频，如'他的同学是教师‘，内部视频文件名随意
+    │   │   ├── 1.avi
+    │   │   ├── 2.avi
+    │   │   └── ...
+    │   ├── 000001/  # 存放第二类语义的视频，如'我的毛巾是干的‘，内部视频文件名随意
+    │   │   ├── 1.avi
+    │   │   ├── 2.avi
+    │   │   └── ...
+    │   └── ...
+    │
+    ├── kme_seq/   #kmean聚类后的序列文件夹
+    │
+    ├── model/   #模型存放文件夹
+    │
+    ├── seq_txt/   #视频序列化存储文件夹
+    │
+    └──corpus.txt   # label——folder映射文件
+
+```
+</details>
+<details open>
+<summary>✏️ 4.修改配置文件</summary>
 
 ## Xuanmen_Net项目需要配置合理的参数用于开发自定义手语识别模型，正确编写参数文件是关键
 
@@ -233,7 +264,16 @@ log:
   video_process_log: "./scripts/config/video_processed.log" #单一视频mediapipe处理可视化保存路径
 
 ```
+</details>
+<details open>
+<summary>✏️ 5.运行训练程序</summary>
 
+## 修改配置文件后，运行以下代码执行模型训练程序
+
+```python
+cd xuanmen #定位到Git代码仓库根目录
+python main.py #执行训练程序 
+```
 </details>
 </details>
 
