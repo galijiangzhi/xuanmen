@@ -14,7 +14,7 @@ def get_config(keys):
         if isinstance(value, dict) and key in value:
             value = value[key]
         else:
-            print('配置文件中找不到{keys}')
+            print(f'配置文件中找不到{keys}')
             return None
     return value
 

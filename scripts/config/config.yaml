@@ -4,6 +4,17 @@ model:
   kmeans类别: 40
   kmeans训练批次大小: 5000
   多头: False
+  词向量维度: 512
+  LSTM隐藏层维度: 512
+  输出词汇表大小（需你确认）: 181
+  n_layers: 1
+  不抽帧双手分离seq最大长度: 800
+  num_heads: 8
+
+
+train:
+  epoch: 10
+  batch_size: 128
 
 mediapipe:
   static_image_mode: False # 视频流模式（跟踪优先）
@@ -18,8 +29,10 @@ mediapipe:
   数据零值比例过滤: False
   整合合理数据: False
   kmeans模型训练: False
-  kmeans对原数据进行处理: True
-#  数据抽帧加工: True
+  kmeans对原数据进行处理: False
+  xuanmen网络训练: True
+
+
 
 数据清洗:
   零值比例阈值: 0.74
@@ -34,5 +47,7 @@ path:
   双手分离全部数据npy_path: './SLR_dataset/准确率正常的全部数据_双手分离.npy'
   kmeans_root_path: './SLR_dataset/model/kmeans'
   kmeseq_root_path: './SLR_dataset/kme_seq'
+  数据文件夹标签path: './SLR_dataset/corpus.txt'
+  xuanmen_model_root_path: './SLR_dataset/model/'
 log:
   video_process_log: "./scripts/config/video_processed.log"
