@@ -33,4 +33,22 @@ pip install -r requirements.txt
 <details>
 <summary>✏️ 快速运行demo</summary>
 
+### 我们提供了建议的demo用于展示结果，请确保已完成环境配置后执行以下代码运行示例程序
+
+```python
+#确保当前路径为git项目根文件夹
+pwd
+
+#导航至demo程序目录
+cd demo/flask
+
+#运行demo程序
+python main.py
+```
+![demo前端示意图](./information/demo_前端示意图.png)
+
+模型选择建议使用 km40-emb256-hid256_双手分离_抽帧1，
+同时我们提供了一些测试视频，测试视频根路径为 'xuanmen/demo/demo_data'，
+这些测试视频会在克隆代码仓库的时候一并克隆到本地。
+
 ![替代文字](./information/model_comparison.png)
