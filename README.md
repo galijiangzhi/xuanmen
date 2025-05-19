@@ -53,5 +53,38 @@ python main.py
 模型选择建议使用 km40-emb256-hid256_双手分离_抽帧1，
 同时我们提供了一些测试视频，测试视频根路径为 'xuanmen/demo/demo_data'，
 这些测试视频会在克隆代码仓库的时候一并克隆到本地。
+</details>
+<details open>
+<summary>✏️ 训练模型</summary>
+
+### 本指南介绍如何使用 Xuanmen_Net模型 训练您自己的自定义数据集。训练自定义模型是定制手语翻译解决方案的基本步骤。
+
+## 开始之前
+
+首先，确保您已建立必要的环境。克隆Xuanmen_Net代码仓库，配置python3.10环境 并从 requirements.txt 中安装必要的依赖库，
+同时训练神经网络的gpu环境也是必要的。推荐使用Python3.10.16+cuda12.3的搭配，pytorch版本在requirements.txt有定义，
+在安装依赖库列表时会自动安装搭配推荐环境使用的pytorch环境。
+
+```python
+git clone https://github.com/galijiangzhi/xuanmen.git
+cd xuanmen
+pip install -r requirements.txt
+```
+
+开发自定义手语识别模型是一个复杂过程：
+* 收集和整理视频数据：收集与特定任务相关的高质量手语视频数据。
+* 整理数据：按照手语的含义对视频数据进行分类，并创建folder-label对照表，该表用于进行’文件夹名‘-'手语含义'映射。
+* 手语序列提取：将全部的手语数据进行汇总，训练kmeans聚类网络对对高维手部轨迹进行编码，获得紧凑的类别化表示
+* 训练序列翻译网络：训练seq2seq网络，将类别化表示的手部动作序列翻译为目标语言
+* 部署与预测：利用训练后的模型对未见过的手部序列进行推理
+* 收集边缘案例：找出模型表现不佳的情况，将类似数据添加到数据集中，以提高模型性能，循环训练。
+
+我们为训练自定义手语模型过程提供了的代码，包括手部序列提取，kmeans模型训练，手部序列类别化，seq2seq网络训练等。
+
+# 1.创建数据集
+
+Xuanmen_Net模型需要整理好的数据来学习手语的特征，正确地整理手语视频数据是模型训练的关键。
+
+</details>
 
 ![替代文字](./information/model_comparison.png)
