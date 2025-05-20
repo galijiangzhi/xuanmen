@@ -279,4 +279,57 @@ python main.py #执行训练程序
 </details>
 </details>
 
+<details open>
+<summary><h2>📖 模型文档</h2></summary>
+
+<summary><h3>📌 1.手势特征提取</h3></summary>
+
+手势特征提取是手语识别与翻译的关键步骤，其目标是从原始视频数据中提取出能够表征手语动作的关键信息。
+本文采用MediaPipe框架实现高效的手部关键点检测与跟踪，并生成手部的三维空间坐标。
+为了进一步提高特征提取的鲁棒性，本文对 MediaPipe 输出的关键点数据进行了规范化处理，
+将每个关键点的坐标统一成基于根关键点的相对坐标，消除了因手部位置差异带来的影响。
+
+MediaPipe 是 Google 开发的跨平台开源框架，专注于 实时多媒体处理（如手势识别、姿态估计、人脸检测等）。
+在手语识别任务中，MediaPipe 的 Hand Landmark Model 可以高效检测手部关键点，
+并输出 21 个三维关键点坐标，为手势特征提取提供基础数据。
+
+![（图片来源：MediaPipe 官方文档）](./information/mediapipe_示例.png)
+
+在示例配置文件 config.yaml中，mediapipe手势检测参数如下：
+
+```yaml
+mediapipe:
+  static_image_mode: False # 视频流模式（跟踪优先）
+  max_num_hands: 2  # 最多检测2只手
+  model_complexity: 1  # 中等复杂度模型
+  min_detection_confidence: 0.4  # 检测置信度阈值较高
+  min_tracking_confidence: 0.3  # 跟踪置信度阈值
+```
+
+### 1. static_image_mode
+* False（默认）：优先使用 跟踪模式，适用于视频流。
+* * 优点：利用前一帧的检测结果加速当前帧处理，提升实时性。
+* * 缺点：若手部移动过快可能丢失跟踪，需重新检测。
+* True：强制每帧独立检测，适合静态图片分析，但计算成本较高。
+
+### 2. max_num_hands
+* 设定同时检测的最大手部数量（如手语中的双手交互场景）。 值为 2 时，可覆盖大多数双手手势场景，超过数量则优先检测置信度高的手。
+
+### 3. model_complexity
+* 设定模型复杂度，分三级：
+* * 0（轻量级）：速度最快，精度较低。
+* * 1（中等级）：平衡速度与精度（推荐默认值）。
+* * 2（高复杂度）：精度最高，但延迟显著增加。
+
+### 4. min_detection_confidence
+* 检测阈值，高于此值才认为检测到有效手部（默认 0.5）。
+
+### 5. min_tracking_confidence
+* 跟踪阈值，低于此值则丢弃跟踪结果，触发重新检测（默认 0.5）。
+
+
+![img.png](img.png)
+
+
+</details>
 ![替代文字](./information/model_comparison.png)
