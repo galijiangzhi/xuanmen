@@ -305,28 +305,35 @@ mediapipe:
   model_complexity: 1  # 中等复杂度模型
   min_detection_confidence: 0.4  # 检测置信度阈值较高
   min_tracking_confidence: 0.3  # 跟踪置信度阈值
+  
+流程:
+  video2txt: False #** 流程控制：是否要进行图像特征提取
 ```
 
-### 1. static_image_mode
+### 1. mediapipe.static_image_mode
 * False（默认）：优先使用 跟踪模式，适用于视频流。
 * * 优点：利用前一帧的检测结果加速当前帧处理，提升实时性。
 * * 缺点：若手部移动过快可能丢失跟踪，需重新检测。
 * True：强制每帧独立检测，适合静态图片分析，但计算成本较高。
 
-### 2. max_num_hands
+### 2. mediapipe.max_num_hands
 * 设定同时检测的最大手部数量（如手语中的双手交互场景）。 值为 2 时，可覆盖大多数双手手势场景，超过数量则优先检测置信度高的手。
 
-### 3. model_complexity
+### 3. mediapipe.model_complexity
 设定模型复杂度，分三级：
-* 0（轻量级）：速度最快，精度较低。
-* 1（中等级）：平衡速度与精度（推荐默认值）。
-* 2（高复杂度）：精度最高，但延迟显著增加。
+* 0：（轻量级）速度最快，精度较低。
+* 1：（中等级）平衡速度与精度（推荐默认值）。
+* 2：（高复杂度）精度最高，但延迟显著增加。
 
-### 4. min_detection_confidence
+### 4. mediapipe.min_detection_confidence
 * 检测阈值，高于此值才认为检测到有效手部（默认 0.5）。
 
-### 5. min_tracking_confidence
+### 5. mediapipe.min_tracking_confidence
 * 跟踪阈值，低于此值则丢弃跟踪结果，触发重新检测（默认 0.5）。
+
+### 6. 流程.video2txt
+* False:跳过'使用mediapipe对视频进行特征提取'步骤。
+* True:正常执行'使用mediapipe对视频进行特征提取'步骤。
 </details>
 
 <details open>
@@ -345,19 +352,45 @@ model:
   双手合并: True  #** true为双手合并表示，false为双手分离表示
   kmeans类别: 40  #** 手势分类的类别数
   kmeans训练批次大小: 5000  #训练kmeans时的批次大小，根据内存大小设置即可，5000为内存16g的参考值
+  
+流程:
+  kmeans模型训练: False #** 流程控制：是否要训练kmeans模型
 ```
 
-### 1. 双手合并
+### 1. model.双手合并
 * False（默认）：后期模型使用的手部序列使用双手分离表示，如：'帧1左手，帧1右手，帧2左手，帧2右手，帧3左手，帧3右手……帧n左手，帧n右手'
 * * 优点：分离纪录双手状态，提供更高的模型精度
 * * 缺点：每帧的计算量为‘双手合并模式’的一倍
 * True：后期模型使用的手部序列使用双手合并表示，如：'帧1双手，帧2双手，帧3双手……帧n双手'
 
-### 2. max_num_hands
+### 2. model.max_num_hands
 * 设定同时检测的最大手部数量（如手语中的双手交互场景）。 值为 2 时，可覆盖大多数双手手势场景，超过数量则优先检测置信度高的手。
 
-### 3. kmeans训练批次大小
+### 3. model.kmeans训练批次大小
 * kmeans模型使用Mini_Batch_Kmeans算法进行优化，'kmeans批次大小'参数控制每次参加训练的数据数量，默认为5000，可根据电脑内存大小进行调整
+
+### 4. 流程.kmeans模型训练
+* False:跳过'训练kmeans模型'步骤。
+* True:正常执行'训练kmeans模型'步骤。
+</details>
+
+<details open>
+<summary><h3>📌 3.手势序列转换</h3></summary>
+
+在完成手势特征分类后，本模块将高维的手势符号序列转换为适合模型输入的格式。
+降维之前的每个视频的数据形状为 帧数*{1 if 双手合并 else 2}*{126 if 双手合并 else 63}，降维后每个视频的数据变为一维数组，每个数字代表当前帧率
+的手势编号，数组长度为{帧率 if 双手合兵 else 帧率*2}
+
+```yaml
+
+流程:
+  kmeans对原数据进行处理: False #** 流程控制：是否要使用kmeans模型对数字序列进行降维
+```
+
+### 1. 流程.kmeans对原数据进行处理
+* False:跳过'手势高维序列降维'步骤。
+* True:正常执行'手势高维序列降维'步骤。
+
 
 </details>
 </details>
