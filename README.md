@@ -11,7 +11,7 @@ Xuanmen_Net 是一个基于 PyTorch 的先进手语翻译模型，
 
 快速开始：
 <details open>
-<summary>📖 环境配置</summary>
+<summary><strong style="font-size: 30px">📖 环境配置</summary>
 
 ### 克隆代码仓库并在Python3.10版本的环境中安装依赖项，请确保已安装cuda12.3及以上版本。推荐使用Python3.10.16+cuda12.3的搭配。
 - 支持多级嵌套
@@ -28,7 +28,7 @@ pip install -r requirements.txt
 ```
 </details>
 <details open>
-<summary>📖 快速运行demo</summary>
+<summary><strong style="font-size: 30px">📖 快速运行demo</strong></summary>
 
 ### 我们提供了建议的demo用于展示结果，请确保已完成环境配置后执行以下代码运行示例程序
 
@@ -51,7 +51,7 @@ python main.py
 
 </details>
 <details open>
-<summary>📖 训练模型</summary>
+<summary><strong style="font-size: 30px">📖 训练模型</strong></summary>
 
 ### 本指南介绍如何使用 Xuanmen_Net模型 训练您自己的自定义数据集。训练自定义模型是定制手语翻译解决方案的基本步骤。
 
