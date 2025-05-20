@@ -119,7 +119,7 @@ dataset/
 * 手部动作不宜过快，最佳速度为12cm/s-18cm/s
 </details>
 <details open>
-<summary><h2>✏️ 2.模型参数选择</h2></summary>
+<summary><h3>✏️ 2.模型参数选择</h3></summary>
 
 设置一套参数来启动训练过程，对于不同的应用场景选择不同的参数可以有效提高系统的结果，
 Xuanmen_Net在实验阶段测试了一系列模型参数，每种模型都能在速度和准确性之前取得不同的平衡。
@@ -164,7 +164,7 @@ cluster_num: 80
 </details>
 <details open>
 
-<summary><h2>✏️ 3.整理目录</h2></summary>
+<summary><h3>✏️ 3.整理目录</h3></summary>
 
 ## 构建您的数据集目录
 
@@ -196,7 +196,7 @@ xuanmen(git代码仓库根路径）
 </details>
 <details open>
 
-<summary><h2>✏️ 4.修改配置文件</h2></summary>
+<summary><h3>✏️ 4.修改配置文件</h3></summary>
 
 ## Xuanmen_Net项目需要配置合理的参数用于开发自定义手语识别模型，正确编写参数文件是关键
 
@@ -269,7 +269,7 @@ log:
 </details>
 <details open>
 
-<summary><h2>✏️ 5.运行训练程序</h2></summary>
+<summary><h3>✏️ 5.运行训练程序</h3></summary>
 ## 修改配置文件后，运行以下代码执行模型训练程序
 
 ```python
