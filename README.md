@@ -28,7 +28,7 @@ pip install -r requirements.txt
 ```
 </details>
 <details open>
-<summary><strong style="font-size: 30px">📖 快速运行demo</strong></summary>
+<summary><strong style="font-size: 130px">📖 快速运行demo</strong></summary>
 
 ### 我们提供了建议的demo用于展示结果，请确保已完成环境配置后执行以下代码运行示例程序
 
