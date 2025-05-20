@@ -179,7 +179,7 @@ cluster_num: 80
 * 计算参数:控制最大进程数
 * path: 记录关键路径，如数据集视频路径，数据序列路径，模型路径等
 
-以下是默认配置文件config.yaml[(在GitHub上查看)](https://github.com/galijiangzhi/xuanmen/blob/main/scripts/config/config.yaml):
+以下是默认配置文件config.yaml[(在GitHub上查看)](https://github.com/galijiangzhi/xuanmen/blob/main/scripts/config/config.yaml)，其中标注带双星号（**）的为需要注意修改项:
 
 ```yaml
 model:
