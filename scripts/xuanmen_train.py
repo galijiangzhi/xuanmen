@@ -1,3 +1,6 @@
+# Copyright (C) 2024 "白稹" (GitHub: @galijiangzhi)
+# SPDX-License-Identifier: AGPL-3.0-only
+
 import torch
 import torch.nn as nn
 from torchtext.vocab import build_vocab_from_iterator

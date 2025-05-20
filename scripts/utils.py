@@ -1,3 +1,6 @@
+# Copyright (C) 2024 "白稹" (GitHub: @galijiangzhi)
+# SPDX-License-Identifier: AGPL-3.0-only
+
 import os
 from scripts.config.config import get_config
 
@@ -20,7 +23,6 @@ def ensure_path_exists(path_list=path_list):
     None
     """
     for path in path_list:
-        # 标准化路径（处理如./, ../等）
         normalized_path = os.path.normpath(path)
 
         if not os.path.exists(normalized_path):

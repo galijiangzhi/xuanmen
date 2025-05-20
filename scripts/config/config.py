@@ -1,3 +1,6 @@
+# Copyright (C) 2024 "白稹" (GitHub: @galijiangzhi)
+# SPDX-License-Identifier: AGPL-3.0-only
+
 import yaml
 import os
 def get_config(keys):

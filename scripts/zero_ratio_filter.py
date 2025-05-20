@@ -1,3 +1,6 @@
+# Copyright (C) 2024 "白稹" (GitHub: @galijiangzhi)
+# SPDX-License-Identifier: AGPL-3.0-only
+
 import os
 import numpy as np
 import matplotlib.pyplot as plt

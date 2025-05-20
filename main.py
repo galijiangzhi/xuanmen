@@ -1,3 +1,6 @@
+# Copyright (C) 2024 "白稹" (GitHub: @galijiangzhi)
+# SPDX-License-Identifier: AGPL-3.0-only
+
 from scripts.config.config import get_config
 import os
 os.environ['GLOG_minloglevel'] = '2'

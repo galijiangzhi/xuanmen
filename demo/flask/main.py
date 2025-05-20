@@ -1,3 +1,6 @@
+# Copyright (C) 2024 "白稹" (GitHub: @galijiangzhi)
+# SPDX-License-Identifier: AGPL-3.0-only
+
 from flask import Flask, request, jsonify, render_template
 import os
 from werkzeug.utils import secure_filename
