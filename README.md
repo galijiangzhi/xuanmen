@@ -282,7 +282,7 @@ python main.py #执行训练程序
 <details open>
 <summary><h2>📖 模型文档</h2></summary>
 
-<details open>
+<details>
 <summary><h3>📓 1.手势特征提取</h3></summary>
 
 手势特征提取是手语识别与翻译的关键步骤，其目标是从原始视频数据中提取出能够表征手语动作的关键信息。
@@ -336,7 +336,7 @@ mediapipe:
 * True:正常执行'使用mediapipe对视频进行特征提取'步骤。
 </details>
 
-<details open>
+<details>
 <summary><h3>📓 2.手势特征分类</h3></summary>
 
 在获得手势的时空特征序列后，Xuanmen_Net利用 K-means聚类算法对手势特征进行分类。
@@ -374,7 +374,7 @@ model:
 * True:正常执行'训练kmeans模型'步骤。
 </details>
 
-<details open>
+<details>
 <summary><h3>📓 3.手势序列转换</h3></summary>
 
 在完成手势特征分类后，本模块将高维的手势符号序列转换为适合模型输入的格式。
@@ -393,10 +393,10 @@ model:
 
 </details>
 
-<details open>
+<details>
 <summary><h3>📓 4.网络设计</h3></summary>
 
-<details >
+<details>
 <summary><h3>🔖 主干网络参数</h3></summary>
 
 确定最优的聚类数量、词嵌入维度和lstm网络隐藏层维度是网络设计关键挑战之一，该问题的难点在于：缺乏先验知识确定最优的参数。
@@ -479,4 +479,3 @@ model:
 </details>
 
 </details>
-![替代文字](./information/model_comparison.png)
