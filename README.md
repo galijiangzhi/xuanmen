@@ -77,8 +77,7 @@ pip install -r requirements.txt
 
 我们为训练自定义手语模型过程提供了的代码，包括手部序列提取，kmeans模型训练，手部序列类别化，seq2seq网络训练等。
 <details open>
-<summary>✏️ 创建数据集</summary>
-# 1.创建数据集
+<summary>✏️ 1.创建数据集</summary>
 
 Xuanmen_Net模型需要整理好的数据来学习手语的特征，正确地整理手语视频数据是模型训练的关键。
 
@@ -119,8 +118,8 @@ dataset/
 * 单视频时长5-10秒
 * 手部动作不宜过快，最佳速度为12cm/s-18cm/s
 </details>
-
-<summary>✏️ 模型参数选择</summary>
+<details open>
+<summary>✏️ 2.模型参数选择</summary>
 
 设置一套参数来启动训练过程，对于不同的应用场景选择不同的参数可以有效提高系统的结果，
 Xuanmen_Net在实验阶段测试了一系列模型参数，每种模型都能在速度和准确性之前取得不同的平衡。
@@ -137,13 +136,105 @@ Xuanmen_Net在实验阶段测试了一系列模型参数，每种模型都能在
 
 ## 💻 场景化推荐配置
 
-### 📋 模型配置与性能对比
-
 |     配置类型      | 聚类数 | 嵌入维度 | 隐藏层 | 双手处理 | 抽帧间隔 | 预期效果        |
 |:-------------:|:--------:|:----------:|:--------:|:----------:|:----------:|:-------------:|
 | 移动端APP (轻量型)  | 40     | 128      | 128    | 合并     | 5        | BLEU2≈0.64  |
 | 移动端APP (平衡型)  | 50     | 256      | 256    | 独立     | 3        | BLEU2≈0.66  |
 |  桌面级应用 (高性能)  | 80     | 512      | 512    | 独立     | 1        | BLEU2≈0.669 |
+
+
+## ⚙️ 高级调参建议
+
+### 数据量较小时：
+* 启用多头注意力 (multi-head=True)，适当降低聚类数 (K=30-40)，可提升小数据场景效果11%
+
+### 实时性要求高时：
+
+```python
+# 在config.yaml中调整
+sampling_interval: 5  # 抽帧间隔
+hands_model: True     # 双手合并
+```
+### 精度优先时：
+```python
+多头: True  
+embedding_dim: 512
+cluster_num: 80
+```
+</details>
+<details open>
+<summary>✏️ 3.修改配置文件</summary>
+
+## Xuanmen_Net项目需要配置合理的参数用于开发自定义手语识别模型，正确编写参数文件是关键
+
+### 配置文件概述了数据集的结构，序列翻译模型定义的，手势提取模型的结构以及关键文件的路径，并且还有一个流程表用于控制项目只运行某些模块。
+
+默认的示例配置文件 **scripts/config/config.yaml** 文件包括：
+
+* model: 包含双手模式,取样区间，手势类别，序列长度，多头模式，词向量维度，隐藏层维度，n_layers，以及多头的数量。
+* train: 包括训练批次和批次大小
+* mediapipe: 手势提取网络的关键参数，与mediapipe类的定义一致
+* 流程:控制每个步骤是否要进行运行
+* 数据清洗: 控制特征提取后的文件过滤，删除零值过高的数据以保证数据的高质量
+* 计算参数:控制最大进程数
+* path: 记录关键路径，如数据集视频路径，数据序列路径，模型路径等
+
+以下是默认配置文件config.yaml[(在GitHub上查看)](https://github.com/galijiangzhi/xuanmen/blob/main/scripts/config/config.yaml):
+
+```yaml
+model:
+  双手合并: True  #** true为双手合并表示，false为双手分离表示
+  取样区间: 1     #** 该参数用于控制每多少帧取一帧，1表示每帧都取，2表示每2帧取1帧
+  kmeans类别: 40  #** 手势分类的类别数
+  kmeans训练批次大小: 5000  #训练kmeans时的批次大小，根据内存大小设置即可，5000为内存16g的参考值
+  不抽帧双手分离seq最大长度: 800 #** 设置默认情况下单个手势的最长帧率，计算方式为 最长视频时间*帧率*2
+  多头: False #** 是否启用多头网络
+  词向量维度: 512 #** 设置词向量维度
+  LSTM隐藏层维度: 512 #** 设置隐藏层维度
+  n_layers: 1 #** 设置网络深度
+  num_heads: 8 #设置多头的数量，如果不使用多头则掠过
+
+train:
+  epoch: 10 #** 训练次数
+  batch_size: 128 #** 批次大小
+
+mediapipe:
+  static_image_mode: False # 视频流模式（跟踪优先）
+  max_num_hands: 2  # 最多检测2只手
+  model_complexity: 1  # 中等复杂度模型
+  min_detection_confidence: 0.4  # 检测置信度阈值较高
+  min_tracking_confidence: 0.3  # 跟踪置信度阈值
+
+流程:
+  video2txt: False #** 流程控制：是否要进行图像特征提取，将每个视频提取为数字序列 每个文件形状为 帧率*2*63（双手分离） 或者 帧率*126(双手合并）
+  数据零值比例过滤: False #** 流程控制：是否要对提取到的数字序列进行过滤，删除零值过高的数据
+  整合合理数据: False #** 流程控制：是否要将所有的数字序列合并到一个文件夹，该流程是kmeans训练的必要流程
+  kmeans模型训练: False #** 流程控制：是否要训练kmeans模型
+  kmeans对原数据进行处理: False #** 流程控制：是否要使用kmeans模型对数字序列进行降维
+  xuanmen网络训练: True #** 流程控制：是否要训练‘翻译网络’
+
+
+数据清洗:
+  零值比例阈值: 0.74 #零值比例过滤参数，非零值低于该值的数据将被定义为低质量数据被删除
+
+计算参数:
+  max_workers: 6 #程序最大进程数量
+
+path:
+  dataset_video_path: './SLR_dataset/color' #** 数据集视频地址
+  dataset_seq_path: './SLR_dataset/seq_txt' #** 数据集特征提取之后的保存地址
+  双手合并全部数据npy_path: './SLR_dataset/准确率正常的全部数据_双手合并.npy' #** 双手合并的全部数据
+  双手分离全部数据npy_path: './SLR_dataset/准确率正常的全部数据_双手分离.npy' #** 双手分离的全部数据
+  kmeans_root_path: './SLR_dataset/model/kmeans' #** kmeans模型保存的根目录
+  kmeseq_root_path: './SLR_dataset/kme_seq' #** kmeans降维之后的数据的保存目录
+  数据文件夹标签path: './SLR_dataset/corpus.txt' #** label-folder映射文件
+  xuanmen_model_root_path: './SLR_dataset/model/' #** 模型保存根目录
+log:
+  video_process_log: "./scripts/config/video_processed.log" #单一视频mediapipe处理可视化保存路径
+
+```
+
+</details>
 </details>
 
 ![替代文字](./information/model_comparison.png)

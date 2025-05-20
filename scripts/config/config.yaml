@@ -1,20 +1,18 @@
 model:
-  双手合并: True
-  取样区间: 1
-  kmeans类别: 40
-  kmeans训练批次大小: 5000
-  多头: False
-  词向量维度: 512
-  LSTM隐藏层维度: 512
-  输出词汇表大小（需你确认）: 181
-  n_layers: 1
-  不抽帧双手分离seq最大长度: 800
-  num_heads: 8
-
+  双手合并: True  #** true为双手合并表示，false为双手分离表示
+  取样区间: 1     #** 该参数用于控制每多少帧取一帧，1表示每帧都取，2表示每2帧取1帧
+  kmeans类别: 40  #** 手势分类的类别数
+  kmeans训练批次大小: 5000  #训练kmeans时的批次大小，根据内存大小设置即可，5000为内存16g的参考值
+  不抽帧双手分离seq最大长度: 800 #** 设置默认情况下单个手势的最长帧率，计算方式为 最长视频时间*帧率*2
+  多头: False #** 是否启用多头网络
+  词向量维度: 512 #** 设置词向量维度
+  LSTM隐藏层维度: 512 #** 设置隐藏层维度
+  n_layers: 1 #** 设置网络深度
+  num_heads: 8 #设置多头的数量，如果不使用多头则掠过
 
 train:
-  epoch: 10
-  batch_size: 128
+  epoch: 10 #** 训练次数
+  batch_size: 128 #** 批次大小
 
 mediapipe:
   static_image_mode: False # 视频流模式（跟踪优先）
@@ -22,32 +20,30 @@ mediapipe:
   model_complexity: 1  # 中等复杂度模型
   min_detection_confidence: 0.4  # 检测置信度阈值较高
   min_tracking_confidence: 0.3  # 跟踪置信度阈值
-  max_workers: 6
 
 流程:
-  video2txt: False
-  数据零值比例过滤: False
-  整合合理数据: False
-  kmeans模型训练: False
-  kmeans对原数据进行处理: False
-  xuanmen网络训练: True
-
+  video2txt: False #** 流程控制：是否要进行图像特征提取，将每个视频提取为数字序列 每个文件形状为 帧率*2*63（双手分离） 或者 帧率*126(双手合并）
+  数据零值比例过滤: False #** 流程控制：是否要对提取到的数字序列进行过滤，删除零值过高的数据
+  整合合理数据: False #** 流程控制：是否要将所有的数字序列合并到一个文件夹，该流程是kmeans训练的必要流程
+  kmeans模型训练: False #** 流程控制：是否要训练kmeans模型
+  kmeans对原数据进行处理: False #** 流程控制：是否要使用kmeans模型对数字序列进行降维
+  xuanmen网络训练: True #** 流程控制：是否要训练‘翻译网络’
 
 
 数据清洗:
-  零值比例阈值: 0.74
+  零值比例阈值: 0.74 #零值比例过滤参数，非零值低于该值的数据将被定义为低质量数据被删除
 
 计算参数:
-  max_workers: 6
+  max_workers: 6 #程序最大进程数量
 
 path:
-  dataset_video_path: './SLR_dataset/color' #数据集视频地址
-  dataset_seq_path: './SLR_dataset/seq_txt' #数据集转换序列之后的保存地址
-  双手合并全部数据npy_path: './SLR_dataset/准确率正常的全部数据_双手合并.npy'
-  双手分离全部数据npy_path: './SLR_dataset/准确率正常的全部数据_双手分离.npy'
-  kmeans_root_path: './SLR_dataset/model/kmeans'
-  kmeseq_root_path: './SLR_dataset/kme_seq'
-  数据文件夹标签path: './SLR_dataset/corpus.txt'
-  xuanmen_model_root_path: './SLR_dataset/model/'
+  dataset_video_path: './SLR_dataset/color' #** 数据集视频地址
+  dataset_seq_path: './SLR_dataset/seq_txt' #** 数据集特征提取之后的保存地址
+  双手合并全部数据npy_path: './SLR_dataset/准确率正常的全部数据_双手合并.npy' #** 双手合并的全部数据
+  双手分离全部数据npy_path: './SLR_dataset/准确率正常的全部数据_双手分离.npy' #** 双手分离的全部数据
+  kmeans_root_path: './SLR_dataset/model/kmeans' #** kmeans模型保存的根目录
+  kmeseq_root_path: './SLR_dataset/kme_seq' #** kmeans降维之后的数据的保存目录
+  数据文件夹标签path: './SLR_dataset/corpus.txt' #** label-folder映射文件
+  xuanmen_model_root_path: './SLR_dataset/model/' #** 模型保存根目录
 log:
-  video_process_log: "./scripts/config/video_processed.log"
+  video_process_log: "./scripts/config/video_processed.log" #单一视频mediapipe处理可视化保存路径
