@@ -479,3 +479,5 @@ model:
 </details>
 
 </details>
+
+![xuanmenduotou](./information/model_comparison.png)
