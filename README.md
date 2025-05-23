@@ -282,7 +282,7 @@ python main.py #执行训练程序
 <details open>
 <summary><h2>📖 模型文档</h2></summary>
 
-<details>
+<details open>
 <summary><h3>📓 1.手势特征提取</h3></summary>
 
 手势特征提取是手语识别与翻译的关键步骤，其目标是从原始视频数据中提取出能够表征手语动作的关键信息。
@@ -336,7 +336,7 @@ mediapipe:
 * True:正常执行'使用mediapipe对视频进行特征提取'步骤。
 </details>
 
-<details>
+<details open>
 <summary><h3>📓 2.手势特征分类</h3></summary>
 
 在获得手势的时空特征序列后，Xuanmen_Net利用 K-means聚类算法对手势特征进行分类。
@@ -374,7 +374,7 @@ model:
 * True:正常执行'训练kmeans模型'步骤。
 </details>
 
-<details>
+<details open>
 <summary><h3>📓 3.手势序列转换</h3></summary>
 
 在完成手势特征分类后，本模块将高维的手势符号序列转换为适合模型输入的格式。
@@ -393,7 +393,7 @@ model:
 
 </details>
 
-<details>
+<details open>
 <summary><h3>📓 4.网络设计</h3></summary>
 
 <details>
@@ -415,7 +415,7 @@ model:
 
 ![不同参数的手语翻译网络效果对比图](./information/不同参数的手语翻译网络效果对比图.png)
 </details>
-<details>
+<details open>
 <summary><h3>🔖 双手合并策略的建模与性能分析</h3></summary>
 
 在手语识别任务中，左右手的运动在保持协同性的同时也保持着一定的独立性，为了平衡计算效率与特征表达能力，
@@ -435,7 +435,7 @@ model:
 |双手合并表示	|K40-e256-h256	|1156277	|27750648	|0.612|
 |双手独立表示	|K40-e512-h512	|4409525	|105828600	|0.620|
 </details>
-<details>
+<details open>
 <summary><h3>🔖 采样间隔分析</h3></summary>
 
 采样间隔是影响手语识别系统性能的关键参数之一。它直接决定了输入模型的帧序列密度，进而影响以下三个核心方面：
@@ -465,7 +465,7 @@ model:
 该数据对应的手部速度为20cm/s,对于高速视频应适当降低采样间隔，对于慢动作视频，采样间隔的影响不大。
 
 </details>
-<details>
+<details open>
 <summary><h3>🔖 引入多头机制</h3></summary>
 我们在基于LSTM的Seq2Seq模型中引入了多头注意力机制（Multi-Head Attention），以增强模型对输入序列的全局依赖建模能力。同时我们大胆猜测，
 在引入注意力机制后，模型用少量数据进行训练就可以得到较好的效果，实验结果也验证了这一点。最终我们设计了Xuanmen_Multi-Head结构，结构如下所示：
