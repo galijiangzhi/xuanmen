@@ -14,8 +14,8 @@ Xuanmen_Net 是一个基于 PyTorch 的先进手语翻译模型，
 <summary><h2>📖 环境配置</h2></summary>
 
 ### 克隆代码仓库并在Python3.10版本的环境中安装依赖项，请确保已安装cuda12.3及以上版本。推荐使用Python3.10.16+cuda12.3的搭配。
-- 支持多级嵌套
-- 显示代码、列表、图片等任意内容
+
+
 ```python
 #克隆代码仓库
 git clone https://github.com/galijiangzhi/xuanmen.git
